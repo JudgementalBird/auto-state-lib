@@ -2,7 +2,8 @@
 --I'm calling them "self making/constructing objects" since thats effectively what they do, if they don't exist and you try to use them, they just make themselves
 
 --For all of these you need to provide a name to the spot input, that NEEDS to be unique to THAT KIND of function, and it needs to be in quotes
---F.ex if you've got the delta function and the pulse function, you can have one pulse(blabla1,"name1") and one delta(blabla2,"name1"), but you cant have two "name1" in the same kind of function. Like, delta(blabla1,"name1") and delta(blabla2,"name1") in the same script wouldn't work
+--F.ex if you've got the delta function and the pulse function, you can have one pulse(blabla1,"name1") and one delta(blabla2,"name1"). 
+--But you cant have two "name1" in the same kind of function. Like, delta(blabla1,"name1") and delta(blabla2,"name1") in the same script wouldn't work
 
 --DELTA
 --same as the logic block, delta of the input number over two ticks
