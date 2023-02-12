@@ -1,6 +1,11 @@
---these can be minified further, they have variable names that they don't need.
+--I wanted a way to work with things that can't happen in a single run of the code as easily as I can use functions, so I started making these
+--I'm calling them "self making/constructing objects" since thats effectively what they do, if they don't exist and you try to use them, they just make themselves
+
+--For all of these you need to provide a name to the spot input, that NEEDS to be unique to THAT KIND of function, and it needs to be in quotes
+--F.ex if you've got the delta function and the pulse function, you can have one pulse(blabla1,"name1") and one delta(blabla2,"name1"), but you cant have two "name1" in the same kind of function. Like, delta(blabla1,"name1") and delta(blabla2,"name1") in the same script wouldn't work
 
 --DELTA
+--same as the logic block, delta of the input number over two ticks
 --DELTA unminified
 function delta(var,spot)
   if not deltaTable then
@@ -16,18 +21,19 @@ function delta(var,spot)
 end
 
 --DELTA minified
-function delta(var,name)if not a then a={}a[name]={oldVar=0,deltaVar=0}elseif not a[name]then a[name]={oldVar=0,deltaVar=0}end;a[name].deltaVar=var-a[name].oldVar;a[name].oldVar=var;return a[name].deltaVar end
+function delta(c,b)if not a then a={}a[b]={oldVar=0,deltaVar=0}elseif not a[b]then a[b]={oldVar=0,deltaVar=0}end;a[b].deltaVar=c-a[b].oldVar;a[b].oldVar=c;return a[b].deltaVar end
 
---DELTA example (for Pony IDE) sidenote uhh its doing something weird with float imprecision.. dunno what thats about.
+--DELTA example (for Pony IDE)
 ign = input.getNumber
 function onTick()
-	print(delta(ign(1),"one"))
-	print(delta(ign(2),"two"))
+	print(delta(ign(1),"name1"))
+	print(delta(ign(2),"name2"))
 end
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
 --PULSE
+--same as the logic block, a pulse of the input bool
 --PULSE unminified
 function pulse(var,spot)
   if not pulseTable then
@@ -42,15 +48,15 @@ function pulse(var,spot)
 end
 
 --PULSE minified
-function pulse(var,name)if not a then a={}a[name]={pulse=false,touch=false}elseif not a[name]then a[name]={pulse=false,touch=false}end;a[name].pulse=var~=a[name].touch and var;a[name].touch=var;return a[name].pulse end
+function pulse(c,b)if not a then a={}a[b]={pulse=false,touch=false}elseif not a[b]then a[b]={pulse=false,touch=false}end;a[b].pulse=c~=a[b].touch and c;a[b].touch=c;return a[b].pulse end
 
 --PULSE example (for Pony IDE)
 ign = input.getBool
 function onTick()
-    if pulse(ign(1),"one") then
+    if pulse(ign(1),"name1") then
         print("pulse 1")
     end
-    if pulse(ign(2),"two") then
+    if pulse(ign(2),"name2") then
         print("pulse 2")
     end
 end
@@ -58,6 +64,8 @@ end
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
 --PID
+--does not have bias or integral windup prevention, will add at some point
+--setpoint expects number, processVar expects number, tunes expects a table with kP at table.p, kI at table.i, and kD at table.d
 --PID unminified
 function pid(setpoint,processVar,tunes,spot)
     if not pidTable then
@@ -79,12 +87,15 @@ function pid(setpoint,processVar,tunes,spot)
 end
 
 --PID minified
+function f(d,e,c,b)if not a then a={}a[b]={error=0,integral=0,derivative=0,errorPrior=0,integralPrior=0}elseif not a[b]then a[b]={error=0,integral=0,derivative=0,errorPrior=0,integralPrior=0}end;a[b].error=d-e;a[b].integral=a[b].integralPrior+a[b].error;a[b].derivative=a[b].error-a[b].errorPrior;a[b].controlOutput=c.p*a[b].error+c.i*a[b].integral+c.d*a[b].derivative;a[b].errorPrior=a[b].error;a[b].integralPrior=a[b].integral;return a[b].controlOutput end
 
 --PID example (for Pony IDE)
+
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
 --BEEPER
+--if input bool is true then it will return true every ticks ticks
 --BEEPER unminified
 function beep(bool,ticks,spot)
 	if not beepTable then
@@ -108,15 +119,15 @@ function beep(bool,ticks,spot)
 end
 
 --BEEPER minified
-
+function beep(c,d,b)if not a then a={}a[b]={i=0}elseif not a[b]then a[b]={i=0}end;if c then if a[b].i>d then a[b].i=0;return true else a[b].i=a[b].i+1;return false end else a[b].i=0;return false end end
 
 --BEEPER example (for Pony IDE)
 ign,pgn = input.getNumber,property.getNumber
 function onTick()
-	if beep(true,30,"one") then
+	if beep(true,30,"name1") then
 		print("beep 1")
 	end
-	if beep(true,40,"two") then
+	if beep(true,40,"name2") then
 		print("beep 2")
 	end
 end
@@ -124,6 +135,8 @@ end
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
 --DELAY
+--like a capacitor with only charge. If true, output true after ticks ticks
+--tbh just use capacitor function below with 0 chargeTicks instead, might get rid of this
 --DELAY unminified
 function delay(bool,ticks,spot)
 	if not delayTable then
@@ -145,15 +158,15 @@ function delay(bool,ticks,spot)
 end
 
 --DELAY minified
-
+function delay(c,d,b)if not a then a={}a[b]={i=0}elseif not a[b]then a[b]={i=0}end;if c then if a[b].i>d then return true else a[b].i=a[b].i+1;return false end else a[b].i=0 end end
 
 --DELAY example (for Pony IDE)
 ign,pgn = input.getNumber,property.getNumber
 function onTick()
-	if delay(true,30,"runar") then
+	if delay(true,30,"name1") then
 		print("delay 1 done")
 	end
-	if delay(true,40,"anne") then
+	if delay(true,40,"name2") then
 		print("delay 2 done")
 	end
 end
@@ -161,6 +174,7 @@ end
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
 --CAPACITOR
+--should work exactly like the logic block with the same name. bool is the input, chargeTicks & dischargeTicks are charge and discharge but in ticks, not seconds
 --CAPACITOR unminified
 function capacitor(bool,chargeTicks,dischargeTicks,spot)
 	if not delayTable then
@@ -188,15 +202,15 @@ function capacitor(bool,chargeTicks,dischargeTicks,spot)
 end
 
 --CAPACITOR minified
-
+function capacitor(c,d,e,b)if not a then a={}a[b]={i1=0,i2=0}elseif not a[b]then a[b]={i1=0,i2=0}end;if c then if a[b].i1>=d then a[b].i2=e;return true else a[b].i1=a[b].i1+1;return false end else if a[b].i2==0 then return false else a[b].i2=a[b].i2-1;return true end end end
 
 --CAPACITOR example (for Pony IDE)
 igb,pgn = input.getBool,property.getNumber
 function onTick()
-	if capacitor(igb(1),0,3,"runar") then
+	if capacitor(igb(1),0,3,"name1") then
 		print("1 true")
 	end
-	if capacitor(igb(2),0,4,"anne") then
+	if capacitor(igb(2),0,4,"name2") then
 		print("2 true")
 	end
 end
