@@ -261,6 +261,13 @@ print(delta(x, "customKey", howManyTicksBackInTime)) --prints: 1
 y = y + 0.69
 print(delta(y, "customKey2", howManyTicksBackInTime)) --prints: 0.69
 
+
+
+
+
+
+
+--template to add new functions below:
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
 --
@@ -271,3 +278,52 @@ print(delta(y, "customKey2", howManyTicksBackInTime)) --prints: 0.69
 
 
 -- example (for Pony IDE)
+
+
+
+
+
+
+
+
+--template WITH explanation for this kind of structure below:
+
+function functionName(input1,input2,spot) --as many inputs as are needed can be inputted. spot is required for this structure, the provided argument to spot must be in quotes
+  if not bigTable then --if not variable is a way of checking if something exists, if it does not exist then it will return false. if the table that holds the tables with their variables doesn't exist:
+    bigTable = {} --create it
+    bigTable[spot] = {variable1=whatever,variable2=whatever} --create the table inside the main table with as many variables as we need to keep track of across runs, with whatever start values they should have
+  elseif not bigTable[spot] then --if the table that holds variables at the spot provided does not exist:
+    bigTable[spot] = {variable1=whatever,variable2=whatever} --the main table already exists so we don't create it, but we create our spot in it
+  end
+    --in place of this comment goes whatever code should run each time
+    --To use the inputs to the function we just write what we called them when we defined the function, same as normal (in this case input1 and input2)
+    --To use variables we created in the main table or want to save over time, we can do bigTable[spot].nameOfVariable and that way we will retrieve it at the spot this function was called with. In this case an example would be bigTable[spot].variable1
+
+  return bigTable[spot].whateverWeWannaReturn --return whatever we saved that we want to return from this spot
+end
+
+and to use:
+x = functionName(something,anotherThing,"whatever string as long as its surrounded by quotes and unique to this kind of function")
+
+the first if not bigTable is needed for this to work at all, it needs to create the table and its insides at this spot
+the elseif not bigTable[spot] is needed in case this function is used many places. Without it, the code might make bigTable and bigTable["thing number 1"] in it, but if we on a later line use the function with "thing number 2" as spot, it would see that bigTable already exists and not make bigTable or bigTable["thing number 2"], so it would error or do something strange
+
+There are much smaller ways to do a similar thing, but that require you do x = makeThingObject() for each function over time you wanna use, which is not simple enough to use for me personally though its obviously preference
+
+
+
+--template WITHOUT explanation for this kind of structure below:
+function functionName(input1,input2,spot)
+  if not bigTable then
+    bigTable = {}
+    bigTable[spot] = {variable1=whatever,variable2=whatever}
+  elseif not bigTable[spot] then
+    deltaTable[spot] = {variable1=whatever,variable2=whatever}
+  end
+    --in place of this comment goes whatever code should run each time
+  return bigTable[spot].whateverWeWannaReturn
+end
+
+
+
+--thesavingdeath wrote the advanced delta function and the vector3 delta function!
