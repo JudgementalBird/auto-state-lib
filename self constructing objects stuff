@@ -5,6 +5,9 @@
 --F.ex if you've got the delta function and the pulse function, you can have one pulse(blabla1,"name1") and one delta(blabla2,"name1"). 
 --But you cant have two "name1" in the same kind of function. Like, delta(blabla1,"name1") and delta(blabla2,"name1") in the same script wouldn't work
 
+--Realized just now that the minified versions WILL interfere with each other if you have the name spot for any different kind of function.
+--I will go through and make them make different master tables at some point but for now keep that in mind, spot needs to be unique across functions too.
+
 --DELTA
 --same as the logic block, delta of the input number over two ticks
 --DELTA unminified
@@ -20,6 +23,9 @@ function delta(var,spot)
 
   return deltaTable[spot].deltaVar
 end
+
+--DELTA Vector3 version
+function delta3(A,B) return {x=delta(A.x,B.."X"),y=delta(A.y,B.."Y"),z=delta(A.z,B.."Z")} end
 
 --DELTA minified
 function delta(c,b)if not a then a={}a[b]={oldVar=0,deltaVar=0}elseif not a[b]then a[b]={oldVar=0,deltaVar=0}end;a[b].deltaVar=c-a[b].oldVar;a[b].oldVar=c;return a[b].deltaVar end
@@ -215,6 +221,45 @@ function onTick()
 		print("2 true")
 	end
 end
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
+
+--ADVANCED DELTA
+--takes the delta of c over n ticks, b is spot
+--ADVANCED DELTA unminified
+function delta(c,b,n)
+	if not a then
+		a={} a[b]={}
+		a[b].deltaVar=0
+		a[b].last={}
+		for i=1,100 do
+			a[b].last[i]=0
+		end
+	elseif not a[b] then
+		a[b]={}
+		a[b].deltaVar=0
+		a[b].last={}
+		for i=1,100 do
+			a[b].last[i]=0
+		end
+	end
+	a[b].deltaVar=(c-a[b].last[n])/n
+	for i=100,2,-1 do
+		a[b].last[i]=a[b].last[i-1]
+	end
+	a[b].last[1]=c
+	return a[b].deltaVar
+end
+
+--ADVANCED DELTA minified
+function delta(c,b,n)if not a then a={} a[b]={} a[b].deltaVar=0 a[b].last={} for i=1,100 do a[b].last[i]=0 end elseif not a[b] then a[b]={} a[b].deltaVar=0 a[b].last={} for i=1,100 do a[b].last[i]=0 end end a[b].deltaVar=(c-a[b].last[n])/n for i=100,2,-1 do a[b].last[i]=a[b].last[i-1] end a[b].last[1]=c return a[b].deltaVar end
+
+--example (for Pony IDE)
+howManyTicksBackInTime = 5
+x = x + 1
+print(delta(x, "customKey", howManyTicksBackInTime)) --prints: 1
+y = y + 0.69
+print(delta(y, "customKey2", howManyTicksBackInTime)) --prints: 0.69
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
