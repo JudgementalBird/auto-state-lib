@@ -1,6 +1,7 @@
 --buncha onDraw stuff because I need somewhere to store it, maybe it is useful to someone else too
 --will add more later today
 
+--draw circle at x,y with radius and segments segments. few segments can draw triangles, squares, pentagons, etc. Rotate expects radians, so you can rotate shapes
 function circle(x,y,radius,segments,rotate)
 	rotate = rotate or 0
 	segment = pi2/segments
@@ -8,3 +9,4 @@ function circle(x,y,radius,segments,rotate)
 		screen.drawLine(cos(segment*i+rotate)*radius+x,sin(segment*i+rotate)*radius+y,cos(segment*((i-1)%segments)+rotate)*radius+x,sin(segment*((i-1)%segments)+rotate)*radius+y)
 	end
 end
+
