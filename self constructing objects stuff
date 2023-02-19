@@ -261,8 +261,43 @@ print(delta(x, "customKey", howManyTicksBackInTime)) --prints: 1
 y = y + 0.69
 print(delta(y, "customKey2", howManyTicksBackInTime)) --prints: 0.69
 
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
+--VARIABLE TIME ROLLING AVERAGE
+--VARIABLE TIME ROLLING AVERAGE unminified
+function vRollAvg(input,ticks,spot)
+    if not varRollAvgTable then
+        varRollAvgTable = {}
+        varRollAvgTable[spot] = {avgTable = {},result = 0,ticks = 0,sum = 0}
+    elseif not varRollAvgTable[spot] then
+        varRollAvgTable[spot] = {avgTable = {},result = 0,ticks = 0,sum = 0}
+    end
+    if ticks<2 then 
+        varRollAvgTable[spot].ticks=2
+    else
+        varRollAvgTable[spot].ticks=ticks
+    end
+    table.insert(varRollAvgTable[spot].avgTable,input)
+    if #varRollAvgTable[spot].avgTable > varRollAvgTable[spot].ticks then
+        table.remove(varRollAvgTable[spot].avgTable,1)
+    end
+    varRollAvgTable[spot].sum=0
+    for key,value in pairs(varRollAvgTable[spot].avgTable) do
+        varRollAvgTable[spot].sum=varRollAvgTable[spot].sum+value
+    end
+    varRollAvgTable[spot].result=varRollAvgTable[spot].sum/#varRollAvgTable[spot].avgTable
+    return varRollAvgTable[spot].result
+end
 
+--VARIABLE TIME ROLLING AVERAGE minified
+function vRollAvg(d,c,b)if not a then a={}a[b]={avgTable={},result=0,ticks=0,sum=0}elseif not a[b]then a[b]={avgTable={},result=0,ticks=0,sum=0}end;if c<2 then a[b].ticks=2 else a[b].ticks=c end;table.insert(a[b].avgTable,d)if#a[b].avgTable>a[b].ticks then table.remove(a[b].avgTable,1)end;a[b].sum=0;for h,f in pairs(a[b].avgTable)do a[b].sum=a[b].sum+f end;a[b].result=a[b].sum/#a[b].avgTable;return a[b].result end
+
+--VARIABLE TIME ROLLING AVERAGE example
+ticks=property.getNumber("ticks")
+function onTick()
+    var=input.getNumber(1)
+    output.setNumber(1,vRollAvg(var,ticks,"customName"))
+end
 
 
 
