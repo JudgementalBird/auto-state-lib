@@ -24,9 +24,6 @@ function delta(var,spot)
   return deltaTable[spot].deltaVar
 end
 
---DELTA Vector3 version
-function delta3(A,B) return {x=delta(A.x,B.."X"),y=delta(A.y,B.."Y"),z=delta(A.z,B.."Z")} end
-
 --DELTA minified
 function delta(c,b)if not a then a={}a[b]={oldVar=0,deltaVar=0}elseif not a[b]then a[b]={oldVar=0,deltaVar=0}end;a[b].deltaVar=c-a[b].oldVar;a[b].oldVar=c;return a[b].deltaVar end
 
@@ -36,6 +33,28 @@ function onTick()
 	print(delta(ign(1),"name1"))
 	print(delta(ign(2),"name2"))
 end
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
+
+-- 3d vector delta
+--requires vec() and subt() from pols/kubson style vector library, subt requires add(), multf(), and invert()
+-- unminified
+function vecDelta(vec,spot)
+  if not vecDeltaTable then
+    vecDeltaTable = {}
+    vecDeltaTable[spot] = {oldVec = vec(),deltaVec = vec()}
+  elseif not vecDeltaTable[spot] then
+    vecDeltaTable[spot] = {oldVec = vec(),deltaVec = vec()}
+  end
+    vecDeltaTable[spot].deltaVec = subt(vec,vecDeltaTable[spot].oldVec)
+    vecDeltaTable[spot].oldVec = vec
+
+  return vecDeltaTable[spot].deltaVec
+end
+
+-- minified
+function vecDelta(c,b)if not a then a={}a[b]={oldVec=c(),deltaVec=c()}elseif not a[b]then a[b]={oldVec=c(),deltaVec=c()}end;a[b].deltaVec=e(c,a[b].oldVec)a[b].oldVec=c;return a[b].deltaVec end
+
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
