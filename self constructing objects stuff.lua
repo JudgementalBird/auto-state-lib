@@ -39,15 +39,15 @@ end
 -- 3d vector delta
 --requires vec() and subt() from pols/kubson style vector library, subt requires add(), multf(), and invert()
 -- unminified
-function vDelta(vec,spot)
-  if not vDeltaTable then
+function vecDelta(a,spot)
+  if not vecDeltaTable then
     vecDeltaTable = {}
     vecDeltaTable[spot] = {oldVec = vec(),deltaVec = vec()}
   elseif not vecDeltaTable[spot] then
     vecDeltaTable[spot] = {oldVec = vec(),deltaVec = vec()}
   end
-    vecDeltaTable[spot].deltaVec = subt(vec,vecDeltaTable[spot].oldVec)
-    vecDeltaTable[spot].oldVec = vec
+    vecDeltaTable[spot].deltaVec = subt(a,vecDeltaTable[spot].oldVec)
+    vecDeltaTable[spot].oldVec = a
 
   return vecDeltaTable[spot].deltaVec
 end
