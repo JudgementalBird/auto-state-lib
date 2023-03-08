@@ -318,7 +318,16 @@ function onTick()
     output.setNumber(1,vRollAvg(var,ticks,"customName"))
 end
 
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
+--LAST VALUE
+--untested !!!
+--LAST VALUE minified
+function lastVal(x,t,c)if not bxdg then bxdg={}end if not bxdg[c]then bxdg[c]={}end table.insert(bxdg[c],1,x)return bxdg[c].t or 0 end
+
+-- example (for Pony IDE)
+a = a + 1
+print(lastVal(a, 5, "lastA")) --value of a 5 ticks ago. a-5 in this case
 
 
 --template to add new functions below:
