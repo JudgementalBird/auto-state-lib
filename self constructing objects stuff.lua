@@ -89,10 +89,9 @@ end
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
 --PID
---does not have bias or integral windup prevention, will add at some point
---setpoint expects number, processVar expects number, tunes expects a table with kP at table.p, kI at table.i, and kD at table.d
+--setpoint expects number, processVar expects number, tunes expects a table with kP at table.p, kI at table.i, and kD at table.d, integralClamp is optional
 --PID unminified
-function pid(setpoint,processVar,tunes,spot)
+function pid(setpoint,processVar,tunes,spot,integralClamp)
     if not pidTable then
         pidTable = {}
         pidTable[spot] = {error=0,integral=0,derivative=0,errorPrior=0,integralPrior=0}
@@ -100,7 +99,11 @@ function pid(setpoint,processVar,tunes,spot)
         pidTable[spot] = {error=0,integral=0,derivative=0,errorPrior=0,integralPrior=0}
     end
     pidTable[spot].error = setpoint - processVar
-    pidTable[spot].integral = pidTable[spot].integralPrior + pidTable[spot].error
+    if integralClamp then
+    	pidTable[spot].integral = math.max(math.min(pidTable[spot].integralPrior + pidTable[spot].error,integralClamp),-integralClamp)
+    else
+    	pidTable[spot].integral = pidTable[spot].integralPrior + pidTable[spot].error
+    end
     pidTable[spot].derivative = pidTable[spot].error - pidTable[spot].errorPrior
     
     pidTable[spot].controlOutput = tunes.p * pidTable[spot].error + tunes.i * pidTable[spot].integral + tunes.d * pidTable[spot].derivative
@@ -112,7 +115,6 @@ function pid(setpoint,processVar,tunes,spot)
 end
 
 --PID minified
-function f(d,e,c,b)if not a then a={}a[b]={error=0,integral=0,derivative=0,errorPrior=0,integralPrior=0}elseif not a[b]then a[b]={error=0,integral=0,derivative=0,errorPrior=0,integralPrior=0}end;a[b].error=d-e;a[b].integral=a[b].integralPrior+a[b].error;a[b].derivative=a[b].error-a[b].errorPrior;a[b].controlOutput=c.p*a[b].error+c.i*a[b].integral+c.d*a[b].derivative;a[b].errorPrior=a[b].error;a[b].integralPrior=a[b].integral;return a[b].controlOutput end
 
 --PID example (for Pony IDE)
 
