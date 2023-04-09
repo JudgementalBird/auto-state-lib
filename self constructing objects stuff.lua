@@ -121,6 +121,38 @@ end
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
+--PID FOR LOOPING SYSTEMS
+--PID FOR LOOPING SYSTEMS unminified
+function loopPid(setpoint,processVar,tunes,spot,integralClamp)
+    if not pidTable then
+        pidTable = {}
+        pidTable[spot] = {error=0,integral=0,derivative=0,errorPrior=0,integralPrior=0}
+    elseif not pidTable[spot] then
+        pidTable[spot] = {error=0,integral=0,derivative=0,errorPrior=0,integralPrior=0}
+    end
+    pidTable[spot].error = ((setpoint - processVar)%1+1.5)%1-0.5
+    if integralClamp then
+    	pidTable[spot].integral = math.max(math.min(pidTable[spot].integralPrior + pidTable[spot].error,integralClamp),-integralClamp)
+    else
+    	pidTable[spot].integral = pidTable[spot].integralPrior + pidTable[spot].error
+    end
+    pidTable[spot].derivative = pidTable[spot].error - pidTable[spot].errorPrior
+    
+    pidTable[spot].controlOutput = tunes.p * pidTable[spot].error + tunes.i * pidTable[spot].integral + tunes.d * pidTable[spot].derivative
+    
+    pidTable[spot].errorPrior = pidTable[spot].error
+    pidTable[spot].integralPrior = pidTable[spot].integral
+    
+    return pidTable[spot].controlOutput
+end
+
+--PID FOR LOOPING SYSTEMS minified
+
+
+--PID FOR LOOPING SYSTEMS example (for Pony IDE)
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
+
 --BEEPER
 --if input bool is true then it will return true every ticks ticks
 --BEEPER unminified
