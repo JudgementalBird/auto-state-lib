@@ -352,6 +352,41 @@ function onTick()
     output.setNumber(1,vRollAvg(var,ticks,"customName"))
 end
 
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
+
+-- ROLLING BUFFER
+-- ROLLING BUFFER unminified
+function rollingBuffer(input,ticks,spot)
+    if not rollingBufferTable then
+        rollingBufferTable = {}
+        rollingBufferTable[spot] = {bufferTable={},ticks = 0}
+    elseif not rollingBufferTable[spot] then
+        rollingBufferTable[spot] = {bufferTable={},ticks = 0}
+    end
+    -- I find it the most logical to just return the input in the eventuality that ticks <= 1
+    if ticks <= 0 then
+        return input
+    else
+        -- let it add a spot to the table to achieve the functionality I want
+        rollingBufferTable[spot].ticks = ticks+1
+        
+        -- put in new info at the end of the table
+        table.insert(rollingBufferTable[spot].bufferTable,input)
+    
+        -- remove oldest info if there are as many or more entries than there should be in the buffer
+        if #rollingBufferTable[spot].bufferTable > rollingBufferTable[spot].ticks then
+            table.remove(rollingBufferTable[spot].bufferTable,1)
+        end
+    
+        -- return oldest value
+        return rollingBufferTable[spot].bufferTable[1]
+    end
+end
+
+-- ROLLING BUFFER minified
+function rollingBuffer(a,b,c)if not rollingBufferTable then rollingBufferTable={}rollingBufferTable[c]={bufferTable={},ticks=0}elseif not rollingBufferTable[c]then rollingBufferTable[c]={bufferTable={},ticks=0}end;if b<=0 then return a else rollingBufferTable[c].ticks=b+1;table.insert(rollingBufferTable[c].bufferTable,a)if#rollingBufferTable[c].bufferTable>rollingBufferTable[c].ticks then table.remove(rollingBufferTable[c].bufferTable,1)end;return rollingBufferTable[c].bufferTable[1]end end
+
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
 --LAST VALUE
@@ -423,4 +458,4 @@ end
 
 
 
---thesavingdeath wrote the advanced delta function and the vector3 delta function!
+--thesavingdeath wrote some functions here!
