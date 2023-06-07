@@ -178,7 +178,7 @@ function beep(bool,ticks,spot)
 end
 
 --BEEPER minified
-function beep(c,d,b)if not a then a={}a[b]={i=0}elseif not a[b]then a[b]={i=0}end;if c then if a[b].i>d then a[b].i=0;return true else a[b].i=a[b].i+1;return false end else a[b].i=0;return false end end
+function beep(c,d,b)if not a then a={}a[b]={i=0}elseif not a[b]then a[b]={i=0}end;if c then if a[b].i>=d then a[b].i=0;return true else a[b].i=a[b].i+1;return false end else a[b].i=0;return false end end
 
 --BEEPER example (for Pony IDE)
 ign,pgn = input.getNumber,property.getNumber
