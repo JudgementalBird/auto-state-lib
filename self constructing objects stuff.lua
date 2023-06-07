@@ -164,7 +164,7 @@ function beep(bool,ticks,spot)
 		beepTable[spot] = {i=0}
 	end
 	if bool then
-		if beepTable[spot].i > ticks then
+		if beepTable[spot].i >= ticks then
 			beepTable[spot].i = 0
 			return true
 		else
