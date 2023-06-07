@@ -154,7 +154,7 @@ end
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
 --BEEPER
---if input bool is true then it will return true every ticks ticks
+--if input bool is true then it will return true every ticks ticks, eg if it's 4 then there will be 4 false ticks between each true
 --BEEPER unminified
 function beep(bool,ticks,spot)
 	if not beepTable then
