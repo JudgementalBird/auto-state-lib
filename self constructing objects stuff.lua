@@ -193,6 +193,52 @@ end
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
+--handlercachedbeep
+--like beep except it uses handler function instead of bool, and because the function can be expensive, it also lets you cache the result
+--handlercachedbeep unminified
+function handlercachedbeep(handler,cacheticks,beepticks,spot)
+	
+	--ensure we are all good and set up
+	if not handlercachedbeeptable then
+		handlercachedbeeptable = {}
+		handlercachedbeeptable[spot] = {i=0,c=cacheticks,r=false}
+	elseif not handlercachedbeeptable[spot] then
+		handlercachedbeeptable[spot] = {i=0,c=cacheticks,r=false}
+	end
+	
+	--run handler and cache the result
+	if handlercachedbeeptable[spot].c >= cacheticks then
+		--if cache timer has reached supplied cacheticks value, then:
+		--reset cache timer to 0, call the handler, store the result to be used for return until we run the handler again
+		handlercachedbeeptable[spot].c = 0
+		handlercachedbeeptable[spot].r = handler()
+	else
+		--increment cache timer
+		handlercachedbeeptable[spot].c = handlercachedbeeptable[spot].c + 1
+	end
+
+	--beep like normal using cached value instead of calling handler function every tick
+	if handlercachedbeeptable[spot].r then
+		if handlercachedbeeptable[spot].i >= beepticks then
+			handlercachedbeeptable[spot].i = 0
+			return true
+		else
+			handlercachedbeeptable[spot].i = handlercachedbeeptable[spot].i + 1
+			return false
+		end
+	else
+		handlercachedbeeptable[spot].i = 0
+		return false
+	end
+end
+
+-- minified
+
+
+-- example (for Pony IDE)
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
+
 --DELAY
 --like a capacitor with only charge. If true, output true after ticks ticks
 --tbh just use capacitor function below with 0 chargeTicks instead, might get rid of this
