@@ -362,7 +362,7 @@ print(delta(y, "customKey2", howManyTicksBackInTime)) --prints: 0.69
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
 --VARIABLE TIME ROLLING AVERAGE
---takes the delta of input over ticks ticks
+--
 --VARIABLE TIME ROLLING AVERAGE unminified
 function vRollAvg(input,ticks,spot)
     if not varRollAvgTable then
