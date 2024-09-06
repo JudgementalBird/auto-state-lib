@@ -121,7 +121,7 @@ end
 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Next
 
---PID FOR LOOPING SYSTEMS
+--PID FOR LOOPING SYSTEMS IN TURNS
 --PID FOR LOOPING SYSTEMS unminified
 function loopPid(setpoint,processVar,tunes,spot,integralClamp)
     if not pidTable then
