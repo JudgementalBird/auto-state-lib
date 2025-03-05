@@ -1,5 +1,5 @@
 ### What is this?
-This collection of functions provides a reliable way to very easily use functionality that requires persistent information, ***without setup***. The only price you pay in convenience, is in needing to provide a unique identifier where you use these functions.
+This collection of functions for coding in stormworks, provides a reliable way to very easily use functionality that requires persistent information, ***without setup***. The only price you pay in convenience, is in needing to provide a unique identifier where you use these functions.
 
 Example: Your self landing rocket needs to know its closing velocity with the ground (and you're getting distance on composite 1). You can simply call the delta() function with no setup:
 ```lua
