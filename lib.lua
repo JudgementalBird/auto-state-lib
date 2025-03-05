@@ -78,8 +78,8 @@ end
 ---@param tunes tunes
 ---@param spot string|integer
 ---@param integralClamp number|nil
----@section loopPid
-function loopPid(setpoint,processVar,tunes,spot,integralClamp)
+---@section loop_pid
+function loop_pid(setpoint,processVar,tunes,spot,integralClamp)
     if not _AUTOSTATE_DATA then
         _AUTOSTATE_DATA = {}
         _AUTOSTATE_DATA[spot] = {error=0,integral=0,derivative=0,errorPrior=0,integralPrior=0}
@@ -138,8 +138,8 @@ end
 ---@param cacheticks integer
 ---@param beepticks integer
 ---@param spot string|integer
----@section handlercachedbeep
-function handlercachedbeep(handler,cacheticks,beepticks,spot)
+---@section handler_cached_beep
+function handler_cached_beep(handler,cacheticks,beepticks,spot)
 	if not _AUTOSTATE_DATA then
 		_AUTOSTATE_DATA = {}
 		_AUTOSTATE_DATA[spot] = {i=0,c=cacheticks,r=false}
@@ -242,8 +242,8 @@ end
 ---@param input number
 ---@param ticks integer
 ---@param spot string|integer
----@section vRollAvg
-function vRollAvg(input,ticks,spot)
+---@section variable_rolling_average
+function variable_rolling_average(input,ticks,spot)
     if not _AUTOSTATE_DATA then
         _AUTOSTATE_DATA = {}
         _AUTOSTATE_DATA[spot] = {avgTable = {},result = 0,ticks = 0,sum = 0}
@@ -272,8 +272,8 @@ end
 ---@param input number
 ---@param ticks integer
 ---@param spot string|integer
----@section rollingBuffer
-function rollingBuffer(input,ticks,spot)
+---@section rolling_buffer
+function rolling_buffer(input,ticks,spot)
     if not _AUTOSTATE_DATA then
         _AUTOSTATE_DATA = {}
         _AUTOSTATE_DATA[spot] = {bufferTable={},ticks = 0}

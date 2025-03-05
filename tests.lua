@@ -45,12 +45,12 @@ do--doesn't test i, d, or iclamp
 	--shortest angle is up past 1 (0) and then to 0.2. traditional pid will choose the longer route
 	local ang = 0.9
 	for i = 1,10 do
-		ang = (ang + loopPid(0.2,ang,{p=0.15,i=0,d=0},"e"))%1
+		ang = (ang + loop_pid(0.2,ang,{p=0.15,i=0,d=0},"e"))%1
 	end
 	assert(ang > 0.1)
 	assert(ang < 0.3)
 end
-print("Passed loopPid test")
+print("Passed loop_pid test")
 
 do
 	local beeps = 0
@@ -72,8 +72,8 @@ print("Passed beep test")
 do
 	-- might write this test if I find out the purpose of this function
 end
---print("Passed handlercachedbeep test")
-print("Skipping test of handlercachedbeep")
+--print("Passed handler_cached_beep test")
+print("Skipping test of handler_cached_beep")
 
 do
 	assert(capacitor(true,3,3,"g") == false)
@@ -107,16 +107,16 @@ end
 print("Passed advanced_delta test")
 
 do
-	assert(vRollAvg(1,3,"k") == 1)
-	assert(vRollAvg(2,3,"k") == 1.5)
-	assert(vRollAvg(3,3,"k") == 2)
+	assert(variable_rolling_average(1,3,"k") == 1)
+	assert(variable_rolling_average(2,3,"k") == 1.5)
+	assert(variable_rolling_average(3,3,"k") == 2)
 end
-print("Passed vRollAvg test")
+print("Passed variable_rolling_average test")
 
 do
-	assert(rollingBuffer(1,2,"l") == 1)
-	assert(rollingBuffer(2,2,"l") == 1)
-	assert(rollingBuffer(3,2,"l") == 2)
-	assert(rollingBuffer(4,2,"l") == 3)
+	assert(rolling_buffer(1,2,"l") == 1)
+	assert(rolling_buffer(2,2,"l") == 1)
+	assert(rolling_buffer(3,2,"l") == 2)
+	assert(rolling_buffer(4,2,"l") == 3)
 end
-print("Passed rollingBuffer test")
+print("Passed rolling_buffer test")
