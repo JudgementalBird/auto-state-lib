@@ -4,6 +4,7 @@
 ---@param var number
 ---@param spot string|integer
 ---@return number
+---@section delta
 function delta(var,spot)
   	if not _AUTOSTATE_DATA then
 		_AUTOSTATE_DATA = {}
@@ -15,10 +16,12 @@ function delta(var,spot)
 	_AUTOSTATE_DATA[spot].oldVar = var
   	return _AUTOSTATE_DATA[spot].deltaVar
 end
+---@endsection
 
 ---Like the pulse logic block. Outputs true only on first true call, after a false call.
 ---@param var boolean
 ---@param spot string|integer
+---@section pulse
 function pulse(var,spot)
   if not _AUTOSTATE_DATA then
     _AUTOSTATE_DATA = {}
@@ -30,6 +33,7 @@ function pulse(var,spot)
   _AUTOSTATE_DATA[spot].touch = var
   return _AUTOSTATE_DATA[spot].pulse
 end
+---@endsection
 
 ---@class tunes
 ---@field p number
@@ -42,6 +46,7 @@ end
 ---@param tunes tunes
 ---@param spot string|integer
 ---@param integralClamp number|nil
+---@section pid
 function pid(setpoint,processVar,tunes,spot,integralClamp)
     if not _AUTOSTATE_DATA then
         _AUTOSTATE_DATA = {}
@@ -65,6 +70,7 @@ function pid(setpoint,processVar,tunes,spot,integralClamp)
     
     return persist.controlOutput
 end
+---@endsection
 
 ---PID for looping systems (in turns) (helpful for for example controlling a velocity pivot)
 ---@param setpoint number
@@ -72,6 +78,7 @@ end
 ---@param tunes tunes
 ---@param spot string|integer
 ---@param integralClamp number|nil
+---@section loopPid
 function loopPid(setpoint,processVar,tunes,spot,integralClamp)
     if not _AUTOSTATE_DATA then
         _AUTOSTATE_DATA = {}
@@ -95,11 +102,13 @@ function loopPid(setpoint,processVar,tunes,spot,integralClamp)
     
     return persist.controlOutput
 end
+---@endsection
 
 ---Beeper! If `bool` is true then it'll return true every `ticks` ticks, eg if `ticks` is 4 then there'll be 4 false ticks between each true tick
 ---@param bool boolean
 ---@param ticks integer
 ---@param spot string|integer
+---@section beep
 function beep(bool,ticks,spot)
 	if not _AUTOSTATE_DATA then
 		_AUTOSTATE_DATA = {}
@@ -121,6 +130,7 @@ function beep(bool,ticks,spot)
 		return false
 	end
 end
+---@endsection
 
 ---beeper that uses handler function instead of a bool, and because the function can be expensive, it also lets you cache the result. 
 ---I have to be honest I don't even remember writing this and I have no idea why you would want it.
@@ -128,6 +138,7 @@ end
 ---@param cacheticks integer
 ---@param beepticks integer
 ---@param spot string|integer
+---@section handlercachedbeep
 function handlercachedbeep(handler,cacheticks,beepticks,spot)
 	if not _AUTOSTATE_DATA then
 		_AUTOSTATE_DATA = {}
@@ -162,12 +173,14 @@ function handlercachedbeep(handler,cacheticks,beepticks,spot)
 		return false
 	end
 end
+---@endsection
 
 ---Should work like the capacitor logic block. `bool` is the input, `chargeTicks` & `dischargeTicks` are charge and discharge, but in ticks, not seconds. Will output true on the `chargeTicks`'th tick.
 ---@param bool boolean
 ---@param chargeTicks integer
 ---@param dischargeTicks integer
 ---@param spot string|integer
+---@section capacitor
 function capacitor(bool,chargeTicks,dischargeTicks,spot)
 	if not _AUTOSTATE_DATA then
 		_AUTOSTATE_DATA = {}
@@ -195,11 +208,13 @@ function capacitor(bool,chargeTicks,dischargeTicks,spot)
 		end
 	end
 end
+---@endsection
 
 ---advanced delta, takes the delta of var over ticks ticks, spot is spot
 ---@param var number
 ---@param ticks integer
 ---@param spot string|integer
+---@section advanced_delta
 function advanced_delta(var,ticks,spot)
 	if not _AUTOSTATE_DATA then
 		_AUTOSTATE_DATA={}
@@ -221,11 +236,13 @@ function advanced_delta(var,ticks,spot)
 	persist.last[1]=var
 	return persist.deltaVar
 end
+---@endsection
 
 ---Variable time rolling average.
 ---@param input number
 ---@param ticks integer
 ---@param spot string|integer
+---@section vRollAvg
 function vRollAvg(input,ticks,spot)
     if not _AUTOSTATE_DATA then
         _AUTOSTATE_DATA = {}
@@ -250,10 +267,12 @@ function vRollAvg(input,ticks,spot)
     persist.result=persist.sum/#persist.avgTable
     return persist.result
 end
+---@endsection
 
 ---@param input number
 ---@param ticks integer
 ---@param spot string|integer
+---@section rollingBuffer
 function rollingBuffer(input,ticks,spot)
     if not _AUTOSTATE_DATA then
         _AUTOSTATE_DATA = {}
@@ -280,3 +299,4 @@ function rollingBuffer(input,ticks,spot)
         return persist.bufferTable[1]
     end
 end
+---@endsection
