@@ -21,6 +21,7 @@ end
 ---Like the pulse logic block. Outputs true only on first true call, after a false call.
 ---@param var boolean
 ---@param spot string|integer
+---@return boolean
 ---@section pulse
 function pulse(var,spot)
   if not _AUTOSTATE_DATA then
@@ -46,6 +47,7 @@ end
 ---@param tunes tunes
 ---@param spot string|integer
 ---@param integralClamp number|nil
+---@return number
 ---@section pid
 function pid(setpoint,processVar,tunes,spot,integralClamp)
     if not _AUTOSTATE_DATA then
@@ -78,6 +80,7 @@ end
 ---@param tunes tunes
 ---@param spot string|integer
 ---@param integralClamp number|nil
+---@return number
 ---@section loop_pid
 function loop_pid(setpoint,processVar,tunes,spot,integralClamp)
     if not _AUTOSTATE_DATA then
@@ -108,6 +111,7 @@ end
 ---@param bool boolean
 ---@param ticks integer
 ---@param spot string|integer
+---@return boolean
 ---@section beep
 function beep(bool,ticks,spot)
 	if not _AUTOSTATE_DATA then
@@ -138,6 +142,7 @@ end
 ---@param cacheticks integer
 ---@param beepticks integer
 ---@param spot string|integer
+---@return boolean
 ---@section handler_cached_beep
 function handler_cached_beep(handler,cacheticks,beepticks,spot)
 	if not _AUTOSTATE_DATA then
@@ -180,6 +185,7 @@ end
 ---@param chargeTicks integer
 ---@param dischargeTicks integer
 ---@param spot string|integer
+---@return boolean
 ---@section capacitor
 function capacitor(bool,chargeTicks,dischargeTicks,spot)
 	if not _AUTOSTATE_DATA then
@@ -214,6 +220,7 @@ end
 ---@param var number
 ---@param ticks integer
 ---@param spot string|integer
+---@return number
 ---@section advanced_delta
 function advanced_delta(var,ticks,spot)
 	if not _AUTOSTATE_DATA then
@@ -242,6 +249,7 @@ end
 ---@param input number
 ---@param ticks integer
 ---@param spot string|integer
+---@return number
 ---@section variable_rolling_average
 function variable_rolling_average(input,ticks,spot)
     if not _AUTOSTATE_DATA then
@@ -269,7 +277,7 @@ function variable_rolling_average(input,ticks,spot)
 end
 ---@endsection
 
----@param input number
+---@param input any
 ---@param ticks integer
 ---@param spot string|integer
 ---@section rolling_buffer
